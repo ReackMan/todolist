@@ -1,0 +1,9 @@
+.activeFilter {
+    background-color: #7fffd4;
+    border: #ff0099 2px solid;
+    border-radius: 5px;
+}
+
+.status {
+    opacity: 0.5;
+}
