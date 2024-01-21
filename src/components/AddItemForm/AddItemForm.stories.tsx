@@ -12,12 +12,14 @@ type AddItemFormPropsType = {
     addItem: (newTitle: string) => void
 }
 
-const callback = action('Button "add" was pressed inside the form')
+const callback = async () => action('Button "add" was pressed inside the form')
 
 export const AddItemFormBaseExample = (props: any) => {
+    // @ts-ignore
     return <AddItemForm addItem={ callback }/>
 }
 
 export const AddItemDisabledFormBaseExample = (props: any) => {
+    // @ts-ignore
     return <AddItemForm addItem={ callback } disabled={true}/>
 }

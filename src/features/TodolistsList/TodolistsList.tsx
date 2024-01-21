@@ -1,6 +1,6 @@
 import React from "react";
 import {useTodolistsList, UseTodolistsListPropsType} from "./hooks/useTodolistsList";
-import {Grid, Paper} from "@mui/material";
+import {Grid} from "@mui/material";
 import {Todolist} from "./Todolist/Todolist";
 import {AddItemForm} from "../../components/AddItemForm/AddItemForm";
 import {Navigate} from "react-router-dom";
@@ -8,9 +8,7 @@ import {Navigate} from "react-router-dom";
 export const TodolistsList: React.FC<UseTodolistsListPropsType> = (props) => {
 
     let {
-        todolists, tasks, isLoggedIn,
-        removeTask, changeTaskStatus, changeTaskTitle, addTask,
-        removeTodolist, changeTodolistTitle, addTodolist, changeFilter
+        todolists, tasks, isLoggedIn, addTodolistCallback
     } = useTodolistsList(props)
 
     if (!isLoggedIn) {
@@ -19,26 +17,19 @@ export const TodolistsList: React.FC<UseTodolistsListPropsType> = (props) => {
 
     return <>
         <Grid container>
-            <AddItemForm addItem={addTodolist}/>
+            <AddItemForm addItem={addTodolistCallback}/>
         </Grid>
-        <Grid container spacing={3} style={{padding: '20px'}}>
+        <Grid container spacing={3} style={{padding: '20px', flexWrap: 'nowrap', overflowX: 'scroll', height: '100%'}}>
             {
                 todolists.map(tl => {
                     let tasksForTodolist = tasks[tl.id]
-                    return <Grid item>
-                        <Paper style={{padding: '10px'}}>
+                    return <Grid item >
+                        <div style={{width: '300px'}}>
                             <Todolist key={tl.id}
                                       tasks={tasksForTodolist}
-                                      addTask={addTask}
-                                      changeTodolistTitle={changeTodolistTitle}
-                                      removeTask={removeTask}
-                                      changeFilter={changeFilter}
-                                      changeTaskStatus={changeTaskStatus}
-                                      removeTodolist={removeTodolist}
-                                      changeTaskTitle={changeTaskTitle}
                                       demo={props.demo}
                                       todolist={tl}/>
-                        </Paper>
+                        </div>
                     </Grid>
                 })
             }

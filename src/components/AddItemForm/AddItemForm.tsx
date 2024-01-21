@@ -1,11 +1,10 @@
-import React, {ChangeEvent, FC, KeyboardEvent, useState} from 'react';
-import aif from "./AddItemForm.module.css";
-import {Button, IconButton, TextField} from "@mui/material";
-import {ControlPoint} from "@mui/icons-material";
-import {useAddItemForm} from "./hooks/useAddItemForm";
+import React, {FC} from 'react';
+import {IconButton, TextField} from "@mui/material";
+import {AddCircle} from "@mui/icons-material";
+import {AddItemFormSubmitHelperType, useAddItemForm} from "./hooks/useAddItemForm";
 
 type AddItemFormPropsType = {
-    addItem: (newTitle: string) => void
+    addItem: (newTitle: string, helpers: AddItemFormSubmitHelperType) => Promise<void>
     disabled?: boolean
 }
 
@@ -15,16 +14,16 @@ export const AddItemForm: FC<AddItemFormPropsType> = React.memo(({addItem, disab
         useAddItemForm(addItem)
 
     return (
-        <div>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
             <TextField onChange={changeNewTitle}
                        value={newTitle}
                        label='Type value'
                        onKeyPress={onKeyPressHandler}
-                       error={error}
-                       helperText={error ? 'Title is required' : ''}
+                       error={!!error.length}
+                       helperText={error}
                        disabled={disabled}/>
             <IconButton onClick={addNewTask} disabled={disabled}>
-                <ControlPoint/>
+                <AddCircle color='primary'/>
             </IconButton>
         </div>
     );

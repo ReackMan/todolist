@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect} from 'react';
+import React from 'react';
 import './App.css';
 import {
     AppBar,
@@ -12,14 +12,11 @@ import {
     Typography
 } from "@mui/material";
 import {Menu} from '@mui/icons-material';
-import {TodolistsList} from "../features/TodolistsList/TodolistsList";
+import {TodolistsList} from "../features/TodolistsList";
 import {ErrorSnackbar} from "../components/ErrorSnackbar/ErrorSnackbar";
-import {useAppDispatch, useAppSelector} from "./redux-store";
 import {UseTodolistsListPropsType} from "../features/TodolistsList/hooks/useTodolistsList";
-import {BrowserRouter, Link, Route, Routes} from "react-router-dom";
-import {Login} from "../features/Login/Login";
-import {setAppIsInitializedTC} from "./app-reducer";
-import {logoutTC} from "../features/Login/auth-reducer";
+import {Route, Routes} from "react-router-dom";
+import {Login} from "../features/Auth";
 import {useApp} from "./hooks/useApp";
 
 
@@ -33,9 +30,8 @@ function App({demo = false}: UseTodolistsListPropsType) {
         </div>
     }
 
-
     return (
-        <div className="App">
+        <div className="app">
             <Box sx={{flexGrow: 1}}>
                 <AppBar position="static">
                     <Toolbar>
@@ -57,7 +53,7 @@ function App({demo = false}: UseTodolistsListPropsType) {
                 </AppBar>
             </Box>
             <ErrorSnackbar/>
-            <Container fixed style={{paddingTop: '20px'}}>
+            <Container fixed style={{paddingTop: '20px', height: '100%'}}>
                 <Routes>
                     <Route path='/' element={<TodolistsList demo={demo}/>}/>
                     <Route path='/login' element={<Login/>}/>

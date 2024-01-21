@@ -1,11 +1,18 @@
-import {addTaskTC, fetchTasksTC, removeTaskTC, tasksReducer, TaskStateType, updateTaskTC} from "./tasks-reducer";
+import {slice, TaskStateType} from "./tasks-reducer";
 import {v1} from "uuid";
-import {TaskPriorities, TaskStatuses} from "../../api/todolists-api";
-import {addTodolistTC, fetchTodolistsTC, removeTodolistTC} from "./todolists-reducer";
+import {tasksActions, todolistsActions} from "./";
+import {TaskPriorities, TaskStatuses} from "../../api/types";
 
 let todolistId1: string
 let todolistId2: string
 let startState: TaskStateType
+
+const tasksReducer = slice.reducer
+
+const {removeTask, addTask,
+    updateTask, fetchTasks} = tasksActions
+const {addTodolist, fetchTodolists,
+    removeTodolist} = todolistsActions
 
 beforeEach(() => {
     todolistId1 = 'todolistId1'
@@ -55,7 +62,7 @@ test('correct task should be removed from correct todolist', () => {
         taskId: '2',
         tlId: 'todolistId2'
     };
-    const endState = tasksReducer(startState, removeTaskTC.fulfilled(param, 'requestId', param))
+    const endState = tasksReducer(startState, removeTask.fulfilled(param, 'requestId', param))
 
     expect(endState['todolistId1'].length).toBe(3)
     expect(endState['todolistId2'].length).toBe(2)
@@ -79,7 +86,7 @@ test('correct task should be added to correct todolist', () => {
         order: 0
     }
 
-    const endState = tasksReducer(startState, addTaskTC.fulfilled(param, 'requestId',
+    const endState = tasksReducer(startState, addTask.fulfilled(param, 'requestId',
         { title: 'juice', tlId: 'todolistId2' }))
 
     expect(endState['todolistId1'].length).toBe(3)
@@ -104,7 +111,7 @@ test('correct task status from correct todolist should be changed', () => {
         }
     }
 
-    const endState = tasksReducer(startState, updateTaskTC.fulfilled(param, 'requestId', param))
+    const endState = tasksReducer(startState, updateTask.fulfilled(param, 'requestId', param))
 
     expect(endState['todolistId2'][1].status).toBe(TaskStatuses.New)
 
@@ -123,7 +130,7 @@ test('correct task title from correct todolist should be changed', () => {
         }
     }
 
-    const endState = tasksReducer(startState, updateTaskTC.fulfilled(param, 'requestId', param))
+    const endState = tasksReducer(startState, updateTask.fulfilled(param, 'requestId', param))
 
     expect(endState['todolistId2'][1].title).toBe('juice')
     expect(endState['todolistId1'][1].title).toBe('JS')
@@ -139,7 +146,7 @@ test('new property with new array should be added when new todolist is added', (
         order: 0
     }
 
-    const endState = tasksReducer(startState, addTodolistTC.fulfilled(param, 'requestId', 'new todolist'))
+    const endState = tasksReducer(startState, addTodolist.fulfilled(param, 'requestId', 'new todolist'))
 
     const keys = Object.keys(endState)
     const newKey = keys.find(k => k != 'todolistId1' && k != 'todolistId2')
@@ -155,7 +162,7 @@ test('new property with new array should be added when new todolist is added', (
 
 test('property with tlId should be deleted', () => {
 
-    const endState = tasksReducer(startState, removeTodolistTC.fulfilled({id: 'todolistId2'},
+    const endState = tasksReducer(startState, removeTodolist.fulfilled({id: 'todolistId2'},
         'requestId', 'todolistId2'))
 
     const keys = Object.keys(endState)
@@ -172,7 +179,7 @@ test('empty arrays should be added when we set todolists', () => {
         {id: '2', title: 'What to buy', addedDate: '', order: 0}
     ]
 
-    const endState = tasksReducer({}, fetchTodolistsTC.fulfilled(param, 'requestId'))
+    const endState = tasksReducer({}, fetchTodolists.fulfilled(param, 'requestId', undefined))
 
     const keys = Object.keys(endState)
 
@@ -187,7 +194,7 @@ test('tasks should be added for todolist', () => {
     const endState = tasksReducer({
         'todolistId1': [],
         'todolistId2': []
-    }, fetchTasksTC.fulfilled({tasks: startState['todolistId1'], tlId: 'todolistId1'}, 'requestId', 'todolistId1'))
+    }, fetchTasks.fulfilled({tasks: startState['todolistId1'], tlId: 'todolistId1'}, 'requestId', 'todolistId1'))
 
     expect(endState['todolistId1'].length).toBe(3)
     expect(endState['todolistId2'].length).toBe(0)

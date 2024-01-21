@@ -1,13 +1,16 @@
 import {ChangeEvent, KeyboardEvent, useState} from "react";
 
-export const useAddItemForm = (addItem: (newTitle: string) => void) => {
+export type AddItemFormSubmitHelperType = {setError: (error: string) => void, setNewTitle: (title: string) => void}
+
+export const useAddItemForm = (addItem: (newTitle: string, helpers:
+    AddItemFormSubmitHelperType) => void) => {
 
     let [newTitle, setNewTitle] = useState('')
-    let [error, setError] = useState(false)
+    let [error, setError] = useState('')
 
     const changeNewTitle = (e: ChangeEvent<HTMLInputElement>) => {
         setNewTitle(e.target.value)
-        setError(false)
+        setError('')
     }
 
     const onKeyPressHandler = (e: KeyboardEvent<HTMLInputElement>) => {
@@ -16,16 +19,13 @@ export const useAddItemForm = (addItem: (newTitle: string) => void) => {
         }
     }
 
-    const addNewTask = () => {
-        if (newTitle.trim() === '') {
-            setNewTitle('')
-            setError(true)
+    const addNewTask = async () => {
+        if (newTitle.trim() !== '') {
+            addItem(newTitle, {setError, setNewTitle})
         } else {
-            addItem(newTitle)
-            setNewTitle('')
-            setError(false)
+            setError('Title is required')
         }
     }
 
-    return { newTitle, error, changeNewTitle, addNewTask, onKeyPressHandler }
+    return {newTitle, error, changeNewTitle, addNewTask, onKeyPressHandler}
 }

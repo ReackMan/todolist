@@ -2,9 +2,9 @@ import React from 'react';
 import {action} from "@storybook/addon-actions";
 import {Todolist} from "./Todolist";
 import {v1} from "uuid";
-import {TaskPriorities, TaskStatuses, TaskType} from "../../../api/todolists-api";
 import {FilterValuesType, TodolistDomainType} from "../todolists-reducer";
 import {TaskStateType} from "../tasks-reducer";
+import {TaskPriorities, TaskStatuses, TaskType} from "../../../api/types";
 
 
 type TodolistPropsType = {
@@ -56,12 +56,5 @@ const changeTaskTitleCallback = action('Task title was removed')
 
 export const TodolistBaseExample = (props: any) => {
     return <Todolist tasks={tasksForTodolist}
-                     addTask={addTaskCallback}
-                     changeTodolistTitle={changeTodolistTitleCallback}
-                     removeTask={removeTaskCallback}
-                     changeFilter={changeFilterCallback}
-                     changeTaskStatus={changeTaskStatusCallback}
-                     removeTodolist={removeTodolistCallback}
-                     changeTaskTitle={changeTaskTitleCallback}
                      todolist={todolist}/>
 }
