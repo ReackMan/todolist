@@ -1,8 +1,7 @@
-import React from 'react';
-import '../App/App.css';
+import React from 'react'
+import '../App/App.css'
 //@ts-ignore
 //import {addTaskAC, removeTaskAC, tasksReducer, updateTaskAC} from "../features/TodolistsList/tasks-reducer";
-
 
 function App() {
     //
@@ -182,7 +181,7 @@ function App() {
             {/*    </Grid>*/}
             {/*</Container>*/}
         </div>
-    );
+    )
 }
 
-export default App;
+export default App

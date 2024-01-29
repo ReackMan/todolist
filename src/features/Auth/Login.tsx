@@ -1,9 +1,9 @@
-import React from 'react';
-import {Button, Checkbox, FormControl, FormControlLabel, FormGroup, FormLabel, Grid, TextField} from "@mui/material";
-import {FormikHelpers, useFormik} from "formik";
-import {Navigate} from "react-router-dom";
-import {authActions} from "./";
-import {useActions, useAppSelector} from "../../utils/redux-utils";
+import React from 'react'
+import { Button, Checkbox, FormControl, FormControlLabel, FormGroup, FormLabel, Grid, TextField } from '@mui/material'
+import { FormikHelpers, useFormik } from 'formik'
+import { Navigate } from 'react-router-dom'
+import { authActions } from './'
+import { useActions, useAppSelector } from '../../utils/redux-utils'
 
 type FormValuesType = {
     email: string
@@ -12,20 +12,19 @@ type FormValuesType = {
 }
 
 export const Login = () => {
-
-    const {login} = useActions(authActions)
-    const isLoggedIn = useAppSelector(state => state.auth.isLoggedIn)
+    const { login } = useActions(authActions)
+    const isLoggedIn = useAppSelector((state) => state.auth.isLoggedIn)
 
     const formik = useFormik({
         validate: (values) => {
             if (!values.email) {
                 return {
-                    email: 'Email is required'
+                    email: 'Email is required',
                 }
             }
             if (!values.password) {
                 return {
-                    password: 'Password is required'
+                    password: 'Password is required',
                 }
             }
         },
@@ -44,43 +43,43 @@ export const Login = () => {
                 }
             }
         },
-    });
+    })
     if (isLoggedIn) {
-        return <Navigate to='/' replace={true}/>
+        return <Navigate to="/" replace={true} />
     }
 
     return (
-        <Grid container justifyContent='center'>
+        <Grid container justifyContent="center">
             <Grid item xs={4}>
                 <form onSubmit={formik.handleSubmit}>
                     <FormControl>
                         <FormLabel></FormLabel>
                         <FormGroup>
-                            <TextField
-                                label='Email'
-                                margin='normal'
-                                {...formik.getFieldProps('email')}
-                            />
+                            <TextField label="Email" margin="normal" {...formik.getFieldProps('email')} />
                             {formik.errors.email ? <div>{formik.errors.email}</div> : null}
                             <TextField
-                                type='password'
-                                label='Password'
-                                margin='normal'
+                                type="password"
+                                label="Password"
+                                margin="normal"
                                 {...formik.getFieldProps('password')}
                             />
                             {formik.errors.password ? <div>{formik.errors.password}</div> : null}
                             <FormControlLabel
-                                label='Remember me'
-                                control={ <Checkbox
-                                    {...formik.getFieldProps('rememberMe')}
-                                    checked={formik.values.rememberMe}
-                                />}
+                                label="Remember me"
+                                control={
+                                    <Checkbox
+                                        {...formik.getFieldProps('rememberMe')}
+                                        checked={formik.values.rememberMe}
+                                    />
+                                }
                             />
-                            <Button type='submit' variant='contained' color='primary'>Login</Button>
+                            <Button type="submit" variant="contained" color="primary">
+                                Login
+                            </Button>
                         </FormGroup>
                     </FormControl>
                 </form>
             </Grid>
         </Grid>
-    );
-};
+    )
+}

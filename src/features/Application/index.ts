@@ -1,9 +1,9 @@
-import {asyncActions, slice, AppStatusType as T1} from "./application-reducer";
-import {appActions as commonAppActions} from "../CommonActions/App";
+import { asyncActions, slice, AppStatusType as T1 } from './application-reducer'
+import { appActions as commonAppActions } from '../CommonActions/App'
 
 const appActions = {
     ...asyncActions,
-    ...slice.actions
+    ...slice.actions,
 }
 
 const appReducer = slice.reducer
@@ -14,7 +14,4 @@ export type AppActionsType =
     | ReturnType<typeof commonAppActions.setAppError>
     | ReturnType<typeof commonAppActions.setAppStatus>
 
-export {
-    appActions,
-    appReducer
-}
+export { appActions, appReducer }

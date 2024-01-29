@@ -1,26 +1,27 @@
-import {useCallback, useEffect} from "react";
-import {tasksActions, todolistsActions} from "../index";
-import {AddItemFormSubmitHelperType} from "../../../components/AddItemForm/hooks/useAddItemForm";
-import {useActions, useAppDispatch, useAppSelector} from "../../../utils/redux-utils";
+import { useCallback, useEffect } from 'react'
+import { todolistsActions } from '../index'
+import { AddItemFormSubmitHelperType } from '../../../components/AddItemForm/hooks/useAddItemForm'
+import { useActions, useAppDispatch, useAppSelector } from '../../../utils/redux-utils'
 
 export type UseTodolistsListPropsType = {
     demo?: boolean
 }
 
-export const useTodolistsList = ({demo = false}: UseTodolistsListPropsType) => {
-
-    const todolists = useAppSelector(state => state.todolists)
-    const tasks = useAppSelector(state => state.tasks)
-    const isLoggedIn = useAppSelector(state => state.auth.isLoggedIn)
+export const useTodolistsList = ({ demo = false }: UseTodolistsListPropsType) => {
+    const todolists = useAppSelector((state) => state.todolists)
+    const tasks = useAppSelector((state) => state.tasks)
+    const isLoggedIn = useAppSelector((state) => state.auth.isLoggedIn)
     const dispatch = useAppDispatch()
 
-    const {fetchTodolists} = useActions(todolistsActions)
+    const { fetchTodolists } = useActions(todolistsActions)
 
     useEffect(() => {
         if (demo || !isLoggedIn) {
             return
         }
-        fetchTodolists()
+        if (!todolists.length) {
+            fetchTodolists()
+        }
     }, [])
 
     const addTodolistCallback = useCallback(async (newTitle: string, helpers: AddItemFormSubmitHelperType) => {
@@ -40,7 +41,9 @@ export const useTodolistsList = ({demo = false}: UseTodolistsListPropsType) => {
     }, [])
 
     return {
-        todolists, tasks, addTodolistCallback, isLoggedIn
+        todolists,
+        tasks,
+        addTodolistCallback,
+        isLoggedIn,
     }
-
-};
+}
