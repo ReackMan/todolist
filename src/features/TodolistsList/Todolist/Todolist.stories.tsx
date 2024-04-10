@@ -1,11 +1,10 @@
-import React from 'react';
-import {action} from "@storybook/addon-actions";
-import {Todolist} from "./Todolist";
-import {v1} from "uuid";
-import {TaskPriorities, TaskStatuses, TaskType} from "../../../api/todolists-api";
-import {FilterValuesType, TodolistDomainType} from "../todolists-reducer";
-import {TaskStateType} from "../tasks-reducer";
-
+import React from 'react'
+import { action } from '@storybook/addon-actions'
+import { Todolist } from './Todolist'
+import { v1 } from 'uuid'
+import { FilterValuesType, TodolistDomainType } from '../todolists-reducer'
+import { TaskStateType } from '../tasks-reducer'
+import { TaskPriorities, TaskStatuses, TaskType } from '../../../api/types'
 
 type TodolistPropsType = {
     todolist: TodolistDomainType
@@ -21,26 +20,46 @@ type TodolistPropsType = {
 
 export default {
     title: 'Todolist Component',
-    component: Todolist
+    component: Todolist,
 }
 
 let initialState = {
-    todolist: {id: 'todolistId1', title: 'What to learn', filter: 'all', addedDate: '', order: 0,
-        entityStatus: "idle"} as TodolistDomainType,
+    todolist: {
+        id: 'todolistId1',
+        title: 'What to learn',
+        filter: 'all',
+        addedDate: '',
+        order: 0,
+        entityStatus: 'idle',
+    } as TodolistDomainType,
     tasks: {
         ['todolistId1']: [
             {
-                id: v1(), title: 'HTML&CSS', status: TaskStatuses.Completed, todoListId: 'todolistId1',
-                startDate: '', deadline: '', addedDate: '', order: 0, priority: TaskPriorities.Low,
-                description: ''
+                id: v1(),
+                title: 'HTML&CSS',
+                status: TaskStatuses.Completed,
+                todoListId: 'todolistId1',
+                startDate: '',
+                deadline: '',
+                addedDate: '',
+                order: 0,
+                priority: TaskPriorities.Low,
+                description: '',
             },
             {
-                id: v1(), title: 'JS', status: TaskStatuses.Completed, todoListId: 'todolistId1',
-                startDate: '', deadline: '', addedDate: '', order: 0, priority: TaskPriorities.Low,
-                description: ''
+                id: v1(),
+                title: 'JS',
+                status: TaskStatuses.Completed,
+                todoListId: 'todolistId1',
+                startDate: '',
+                deadline: '',
+                addedDate: '',
+                order: 0,
+                priority: TaskPriorities.Low,
+                description: '',
             },
         ],
-    } as TaskStateType
+    } as TaskStateType,
 }
 let todolist = initialState.todolist
 let tasksForTodolist = initialState.tasks['todolistId1']
@@ -53,15 +72,6 @@ const changeTaskStatusCallback = action('Status was changed')
 const removeTodolistCallback = action('Todolist was removed')
 const changeTaskTitleCallback = action('Task title was removed')
 
-
 export const TodolistBaseExample = (props: any) => {
-    return <Todolist tasks={tasksForTodolist}
-                     addTask={addTaskCallback}
-                     changeTodolistTitle={changeTodolistTitleCallback}
-                     removeTask={removeTaskCallback}
-                     changeFilter={changeFilterCallback}
-                     changeTaskStatus={changeTaskStatusCallback}
-                     removeTodolist={removeTodolistCallback}
-                     changeTaskTitle={changeTaskTitleCallback}
-                     todolist={todolist}/>
+    return <Todolist tasks={tasksForTodolist} todolist={todolist} />
 }

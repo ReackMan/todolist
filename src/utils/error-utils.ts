@@ -1,20 +1,44 @@
-import {setAppErrorAC, setAppStatusAC} from "../App/app-reducer";
-import {ResponseType} from "../api/todolists-api";
-import {Dispatch} from "redux";
+import { Dispatch } from 'redux'
+import { AxiosError } from 'axios'
+import { ResponseType } from '../api/types'
+import { appActions } from '../features/CommonActions/App'
 
-export const handleServerAppError = <D>(data: ResponseType<D>, dispatch: Dispatch) => {
-    if (data.messages.length) {
-        dispatch(setAppErrorAC({error: data.messages[0]}))
-    } else {
-        dispatch(setAppErrorAC({error: 'some error occurred'}))
+type ThunkAPIType = {
+    dispatch: (action: any) => any
+    rejectWithValue: Function
+}
+
+const { setAppError, setAppStatus } = appActions
+
+export const handleServerAppError = <D>(data: ResponseType<D>, dispatch: Dispatch, showError = true) => {
+    if (showError) {
+        dispatch(setAppError({ error: data.messages.length ? data.messages[0] : 'some error occurred' }))
     }
-    dispatch(setAppStatusAC({status: 'failed'}))
+    dispatch(setAppStatus({ status: 'failed' }))
 }
 
-export const handleServerNetworkError = (error: {message: string}, dispatch: Dispatch) => {
-    dispatch(setAppErrorAC({error: error.message ? error.message : 'some error occurred'}))
-    dispatch(setAppStatusAC({status: 'failed'}))
+export const handleServerNetworkError = (error: { message: string }, dispatch: Dispatch, showError = true) => {
+    if (showError) {
+        dispatch(setAppError({ error: error.message ? error.message : 'some error occurred' }))
+    }
+    dispatch(setAppStatus({ status: 'failed' }))
 }
 
+export const handleAsyncServerAppError = <D>(data: ResponseType<D>, thunkAPI: ThunkAPIType, showError = true) => {
+    if (showError) {
+        thunkAPI.dispatch(
+            appActions.setAppError({ error: data.messages.length ? data.messages[0] : 'Some error occurred' }),
+        )
+    }
+    thunkAPI.dispatch(appActions.setAppStatus({ status: 'failed' }))
+    return thunkAPI.rejectWithValue({ errors: data.messages, fieldsErrors: data.fieldsErrors })
+}
 
+export const handleAsyncServerNetworkError = (error: AxiosError, thunkAPI: ThunkAPIType, showError = true) => {
+    if (showError) {
+        thunkAPI.dispatch(setAppError({ error: error.message ? error.message : 'some error occurred' }))
+    }
+    thunkAPI.dispatch(setAppStatus({ status: 'failed' }))
 
+    return thunkAPI.rejectWithValue({ errors: [error.message], fieldsErrors: undefined })
+}
