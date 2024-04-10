@@ -121,7 +121,6 @@ export const slice = createSlice({
                 })
             })
             .addCase(fetchTasks.fulfilled, (state, action) => {
-                debugger
                 state[action.payload.tlId] = action.payload.tasks
             })
             .addCase(removeTask.fulfilled, (state, action) => {

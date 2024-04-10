@@ -1,52 +1,73 @@
-import {useCallback, useEffect} from "react";
-import {TodolistPropsType} from "../Todolist";
-import {fetchTasksTC} from "../../tasks-reducer";
-import {useAppDispatch} from "../../../../App/redux-store";
+import { useCallback, useEffect } from 'react'
+import { TodolistPropsType } from '../Todolist'
+import { tasksActions, todolistsActions } from '../../index'
+import { FilterValuesType } from '../../todolists-reducer'
+import { AddItemFormSubmitHelperType } from '../../../../components/AddItemForm/hooks/useAddItemForm'
+import { useActions, useAppDispatch } from '../../../../utils/redux-utils'
 
-export const useTodolist = ({demo, ...props}: TodolistPropsType) => {
-
+export const useTodolist = ({ demo, ...props }: TodolistPropsType) => {
+    const { fetchTasks } = useActions(tasksActions)
+    const { removeTodolist, changeTodolistFilter, changeTodolistTitle } = useActions(todolistsActions)
     const dispatch = useAppDispatch()
 
     useEffect(() => {
         if (demo) {
             return
         }
-        dispatch(fetchTasksTC(props.todolist.id))
-    }, []);
-
+        if (!props.tasks.length) {
+            fetchTasks(props.todolist.id)
+        }
+    }, [])
 
     let tasksForTodolist = props.tasks
     if (props.todolist.filter === 'active') {
-        tasksForTodolist = props.tasks.filter(t => !t.status)
+        tasksForTodolist = props.tasks.filter((t) => !t.status)
     }
 
     if (props.todolist.filter === 'completed') {
-        tasksForTodolist = props.tasks.filter(t => t.status)
+        tasksForTodolist = props.tasks.filter((t) => t.status)
     }
 
-    const removeTodolist = () => {
-        props.removeTodolist(props.todolist.id)
+    const removeTodolistHandler = () => {
+        removeTodolist(props.todolist.id)
     }
 
-    const onAllClickHandler = useCallback(() => props.changeFilter('all', props.todolist.id),
-        [props.changeFilter, props.todolist.id])
+    const onFilterButtonClickHandler = useCallback(
+        (filter: FilterValuesType) => changeTodolistFilter({ filter: filter, id: props.todolist.id }),
+        [props.todolist.id],
+    )
 
-    const onActiveClickHandler = useCallback(() => props.changeFilter('active', props.todolist.id),
-        [props.changeFilter, props.todolist.id])
+    const addTaskHandler = useCallback(
+        async (newTitle: string, helpers: AddItemFormSubmitHelperType) => {
+            let thunk = tasksActions.addTask({ title: newTitle, tlId: props.todolist.id })
+            const resultAction = await dispatch(thunk)
 
-    const onCompletedClickHandler = useCallback(() => props.changeFilter('completed', props.todolist.id),
-        [props.changeFilter, props.todolist.id])
+            if (tasksActions.addTask.rejected.match(resultAction)) {
+                if (resultAction.payload?.errors?.length) {
+                    const errorMessage = resultAction.payload?.errors[0]
+                    helpers.setError(errorMessage)
+                } else {
+                    helpers.setError('Some error occurred')
+                }
+            } else {
+                helpers.setNewTitle('')
+            }
+        },
+        [props.todolist.id],
+    )
 
-    const addTask = useCallback((newTitle: string) => {
-        props.addTask(newTitle, props.todolist.id)
-    }, [props.addTask, props.todolist.id])
-
-    const onTlTitleChange = useCallback((value: string) => {
-        props.changeTodolistTitle(value, props.todolist.id)
-    }, [props.changeTodolistTitle, props.todolist.id])
+    const onTlTitleChange = useCallback(
+        (value: string) => {
+            changeTodolistTitle({ title: value, id: props.todolist.id })
+        },
+        [props.todolist.id],
+    )
 
     return {
-        tasksForTodolist, removeTodolist, onAllClickHandler, onActiveClickHandler, onCompletedClickHandler,
-        addTask, onTlTitleChange
+        tasksForTodolist,
+        removeTodolistHandler,
+        onFilterButtonClickHandler,
+        addTaskHandler,
+        onTlTitleChange,
     }
 }

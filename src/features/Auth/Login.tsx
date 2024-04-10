@@ -55,11 +55,7 @@ export const Login = () => {
                     <FormControl>
                         <FormLabel></FormLabel>
                         <FormGroup>
-                            <TextField
-                                type='email'
-                                label="Email"
-                                margin="normal"
-                                {...formik.getFieldProps('email')} />
+                            <TextField label="Email" margin="normal" {...formik.getFieldProps('email')} />
                             {formik.errors.email ? <div>{formik.errors.email}</div> : null}
                             <TextField
                                 type="password"

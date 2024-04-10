@@ -1,19 +1,7 @@
-import React, {useReducer} from 'react';
-import '../App/App.css';
-import {v1} from "uuid";
-import {Todolist} from "../features/TodolistsList/Todolist/Todolist";
-import {AddItemForm} from "../components/AddItemForm/AddItemForm";
-import {AppBar, Box, Button, Container, Grid, IconButton, Menu, Paper, Toolbar, Typography} from "@mui/material";
-
-import {TaskPriorities, TaskStatuses, TaskType} from "../api/todolists-api";
-import {
-    changeTodolistFilterAC,
-    FilterValuesType,
-    todolistsReducer
-} from "../features/TodolistsList/todolists-reducer";
+import React from 'react'
+import '../App/App.css'
 //@ts-ignore
 //import {addTaskAC, removeTaskAC, tasksReducer, updateTaskAC} from "../features/TodolistsList/tasks-reducer";
-
 
 function App() {
     //
@@ -151,7 +139,7 @@ function App() {
             {/*            <Typography variant="h6" component="div" sx={{flexGrow: 1}}>*/}
             {/*                News*/}
             {/*            </Typography>*/}
-            {/*            <Button color="inherit">Login</Button>*/}
+            {/*            <Button color="inherit">Auth</Button>*/}
             {/*        </Toolbar>*/}
             {/*    </AppBar>*/}
             {/*</Box>*/}
@@ -193,7 +181,7 @@ function App() {
             {/*    </Grid>*/}
             {/*</Container>*/}
         </div>
-    );
+    )
 }
 
-export default App;
+export default App
