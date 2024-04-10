@@ -1,8 +1,6 @@
 import React from 'react'
 import { action } from '@storybook/addon-actions'
 import App from './App'
-import { Provider } from 'react-redux'
-import { store } from './redux-store'
 import { BrowserRouterDecorator, ReduxStoreProviderDecorator } from '../stories/decorators/ReduxStoreProviderDecorator'
 
 type EditableSpanPropsType = {

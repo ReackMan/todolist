@@ -12,9 +12,7 @@ export const useAddItemForm = (addItem: (newTitle: string, helpers: AddItemFormS
     }
 
     const onKeyPressHandler = (e: KeyboardEvent<HTMLInputElement>) => {
-        if (e.key === 'Enter') {
-            addNewTask()
-        }
+        return e.key === 'Enter' && addNewTask()
     }
 
     const onBlurHandler = () => {
