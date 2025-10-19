@@ -4,6 +4,7 @@ import { FormikHelpers, useFormik } from 'formik'
 import { Navigate } from 'react-router-dom'
 import { authActions } from './'
 import { useActions, useAppSelector } from '../../utils/redux-utils'
+import s from './Login.module.css'
 
 type FormValuesType = {
     email: string
@@ -53,7 +54,21 @@ export const Login = () => {
             <Grid item xs={4}>
                 <form onSubmit={formik.handleSubmit}>
                     <FormControl>
-                        <FormLabel></FormLabel>
+                        <FormLabel>
+                            <p className={s.text}>
+                                To log in get registered
+                                <a href={"https://social-network.samuraijs.com/"} target={"_blank"} className={s.link}>
+                                    here
+                                </a>
+                            </p>
+                            <p className={s.text}>or use common test account credentials:</p>
+                            <p className={s.text}>
+                                Email: <span className={s.span}>free@samuraijs.com</span>
+                            </p>
+                            <p className={s.text}>
+                                Password: <span className={s.span}>free</span>
+                            </p>
+                        </FormLabel>
                         <FormGroup>
                             <TextField label="Email" margin="normal" {...formik.getFieldProps('email')} />
                             {formik.errors.email ? <div>{formik.errors.email}</div> : null}

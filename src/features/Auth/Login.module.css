@@ -1,0 +1,16 @@
+.link {
+    margin-left: 3px;
+    color: #085eff;
+    font-size: 18px;
+}
+
+.text {
+    margin-bottom: 5px;
+    color: #140e19;
+}
+
+.span {
+    font-size: 18px;
+    font-weight: 600;
+    color: #140e19;
+}
