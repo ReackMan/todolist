@@ -4,17 +4,17 @@ import './index.css'
 import App from './App/App'
 import { Provider } from 'react-redux'
 import { store } from './App/redux-store'
-import { BrowserRouter } from 'react-router-dom'
+import { HashRouter } from 'react-router-dom'
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
 
 const rerenderEntireTree = () => {
     root.render(
-        <Provider store={store}>
-            <BrowserRouter>
-                <App />
-            </BrowserRouter>
-        </Provider>,
+        <HashRouter>
+            <Provider store={store}>
+                    <App />
+            </Provider>
+        </HashRouter>
     )
 }
 
