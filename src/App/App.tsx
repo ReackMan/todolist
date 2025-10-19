@@ -38,7 +38,7 @@ function App() {
                             <Menu />
                         </IconButton>
                         <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-                            News
+                            Todolist
                         </Typography>
                         {isLoggedIn && (
                             <Button color="inherit" onClick={logoutHandler}>
